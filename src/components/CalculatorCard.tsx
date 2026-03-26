@@ -2,10 +2,12 @@ import { useState } from "react";
 import {
   calculateMetalValue,
   canAcceptDecimalInput,
+  convertToGrams,
   parseGramInput
 } from "../lib/gold";
 import { formatKrw, formatNumber } from "../lib/format";
 import type { AssetCode } from "../types/gold";
+import type { WeightUnit } from "../lib/gold";
 
 interface CalculatorCardProps {
   asset: AssetCode;
@@ -27,6 +29,7 @@ export const CalculatorCard = ({
   disabled = false
 }: CalculatorCardProps) => {
   const [grams, setGrams] = useState("");
+  const [unit, setUnit] = useState<WeightUnit>("g");
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,8 +51,10 @@ export const CalculatorCard = ({
       return;
     }
 
+    const gramsValue = convertToGrams(parsed.value, unit);
+
     const calculated = calculateMetalValue({
-      grams: parsed.value,
+      grams: gramsValue,
       asset,
       pricePerGramKrw,
       multiplier
@@ -61,6 +66,7 @@ export const CalculatorCard = ({
 
   const handleReset = () => {
     setGrams("");
+    setUnit("g");
     setResult(null);
     setError(null);
   };
@@ -90,20 +96,44 @@ export const CalculatorCard = ({
       <div className="mt-6 space-y-4">
         <label className="block">
           <span className="mb-2 block text-sm font-medium text-subink">
-            {badgeLabel} 그람 수 입력
+            {badgeLabel} 중량 입력
           </span>
-          <div className="relative">
+          <div className="grid grid-cols-[1fr_92px] gap-3">
             <input
               inputMode="decimal"
               value={grams}
               onChange={(event) => handleChange(event.target.value)}
               placeholder="예: 3.75"
               disabled={disabled}
-              className="h-14 w-full rounded-2xl border border-line bg-white px-4 pr-16 text-lg text-ink outline-none transition placeholder:text-subink/50 focus:border-accent/50 focus:bg-accentSoft/30 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-14 w-full rounded-2xl border border-line bg-white px-4 text-lg text-ink outline-none transition placeholder:text-subink/50 focus:border-accent/50 focus:bg-accentSoft/30 disabled:cursor-not-allowed disabled:opacity-60"
             />
-            <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-sm font-semibold text-subink">
-              gram
-            </span>
+            <div className="relative">
+              <select
+                value={unit}
+                onChange={(event) => setUnit(event.target.value as WeightUnit)}
+                disabled={disabled}
+                className="h-14 w-full appearance-none rounded-2xl border border-line bg-white px-4 pr-10 text-sm font-semibold text-ink outline-none transition focus:border-accent/50 focus:bg-accentSoft/30 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                <option value="g">g</option>
+                <option value="kg">kg</option>
+              </select>
+              <span className="pointer-events-none absolute inset-y-0 right-4 flex items-center text-subink">
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="h-4 w-4"
+                >
+                  <path
+                    d="M5 7.5L10 12.5L15 7.5"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </div>
           </div>
         </label>
 
@@ -137,7 +167,7 @@ export const CalculatorCard = ({
           <div>
             <p className="text-sm text-subink">예상 금액</p>
             <p className="mt-1 text-xs text-subink/80">
-              입력값 {grams ? `${formatNumber(Number(grams), 3)}g` : "대기 중"}
+              입력값 {grams ? `${formatNumber(Number(grams), 3)}${unit}` : "대기 중"}
             </p>
           </div>
           <div className="text-right">

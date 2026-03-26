@@ -1,5 +1,7 @@
 import type { AssetCode, CalculationResult, GoldPriceApiResponse } from "../types/gold";
 
+export type WeightUnit = "g" | "kg";
+
 type GramInputParseResult =
   | {
       valid: true;
@@ -65,6 +67,9 @@ export const parseGramInput = (value: string): GramInputParseResult => {
 
 export const canAcceptDecimalInput = (value: string) =>
   /^\d*(\.\d{0,3})?$/.test(value);
+
+export const convertToGrams = (value: number, unit: WeightUnit) =>
+  unit === "kg" ? value * 1000 : value;
 
 export const getAssetPricePerGram = (
   data: GoldPriceApiResponse,
