@@ -1,46 +1,68 @@
-# Gold Value
+# Gold Value API
 
-실시간 금 시세를 기준으로 24K와 18K 예상 금액을 계산하는 React + TypeScript + Vite 프로젝트입니다.
+`/api/prices` 엔드포인트에서 귀금속 `g`당 `KRW` 가격을 반환하는 서버리스 API 예시입니다.
 
-## 추천 API
+## API 흐름
 
-- `MetalpriceAPI`
-  - 공식 문서: https://metalpriceapi.com/documentation
-  - `latest` 엔드포인트와 `XAU` 심볼을 사용해 금 시세를 받아올 수 있습니다.
-  - 무료 플랜이 있다고 안내하지만, 실제 호출 제한과 unit 옵션은 플랜에 따라 다를 수 있으니 공식 문서를 확인하세요.
-- `GoldAPI`
-  - 대안으로 많이 쓰이는 금속 시세 API입니다.
-  - 공식 사이트: https://www.goldapi.io/api/
-  - 세부 플랜과 응답 형식은 배포 전에 공식 문서를 다시 확인하는 것을 권장합니다.
+1. `APISED Gold API`에서 `KRW + gram` 기준 금속 시세를 조회합니다.
+2. 금은 `24K / 18K / 14K` 순도로 재계산합니다.
+3. 최소 60초 동안 서버 메모리 캐시와 `Cache-Control` 헤더를 사용합니다.
+4. 외부 API 실패 시 mock 데이터를 반환합니다.
 
-## 로컬 개발
+## 폴더 구조
 
-```bash
-npm install
-npm run dev
+```txt
+api/
+  _lib/
+    calculate.ts
+    constants.ts
+    metal-api.ts
+    mock.ts
+    types.ts
+  prices.ts
 ```
 
 ## 환경변수
 
-`.env.example`를 참고하세요.
+```env
+APISED_API_KEY=your_api_key
+METAL_API_BASE_URL=https://gold.g.apised.com/v1/latest
+```
 
 중요:
 
-- 프론트엔드에 API Key를 직접 넣지 않습니다.
-- 서버 환경변수에 `METALPRICE_API_KEY`를 설정합니다.
-- 로컬에서 `/api/gold` 서버리스 함수가 없으면 프론트는 자동으로 mock 데이터를 사용합니다.
+- 외부 금속 시세 API 필요
+- API KEY 필요 (APISED 또는 MetalpriceAPI 사이트에서 발급)
+- API KEY 발급 사이트:
+  - APISED: https://gold.g.apised.com/
+  - MetalpriceAPI: https://metalpriceapi.com/
+- API KEY는 반드시 서버 환경변수에 저장해야 함
+- APISED는 `x-api-key` 헤더를 사용함
+- `currencies=KRW`, `weight_unit=gram`으로 바로 g당 KRW 가격 조회 가능
 
-## 배포
+## 실행
 
-Vercel 배포를 기준으로 `api/gold.ts` 서버리스 함수를 함께 사용할 수 있게 구성했습니다.
+```bash
+npm install
+npm run dev:vercel
+```
 
-## 주요 구조
+로컬 접속 주소:
 
-```txt
-api/                서버리스 금 시세 프록시
-src/components/     UI 컴포넌트
-src/hooks/          시세 조회 훅
-src/lib/            계산/포맷 유틸
-src/services/       프론트 API 호출 분리
-src/data/           mock 데이터
+- 웹 앱: `http://localhost:3000/`
+- API: `http://localhost:3000/api/prices`
+
+정상 동작 시 `/api/prices`는 아래 형태를 반환합니다.
+
+```json
+{
+  "gold24kPerGram": 142000,
+  "gold18kPerGram": 106500,
+  "gold14kPerGram": 83070,
+  "silverPerGram": 1650,
+  "platinumPerGram": 48500,
+  "palladiumPerGram": 46200,
+  "updatedAt": "2026-03-26T09:00:00.000Z",
+  "source": "live"
+}
 ```
