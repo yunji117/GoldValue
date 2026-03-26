@@ -12,8 +12,9 @@ import type { WeightUnit } from "../lib/gold";
 interface CalculatorCardProps {
   asset: AssetCode;
   badgeLabel: string;
-  purityLabel: string;
+  purityLabel?: string;
   description: string;
+  inputPlaceholder?: string;
   pricePerGramKrw?: number;
   multiplier?: number;
   disabled?: boolean;
@@ -24,6 +25,7 @@ export const CalculatorCard = ({
   badgeLabel,
   purityLabel,
   description,
+  inputPlaceholder = "무게를 입력해 주세요",
   pricePerGramKrw = 0,
   multiplier,
   disabled = false
@@ -33,17 +35,14 @@ export const CalculatorCard = ({
   const [result, setResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (value: string) => {
-    if (!canAcceptDecimalInput(value)) {
+  const calculateFromInput = (value: string, nextUnit: WeightUnit = unit) => {
+    if (!value.trim()) {
+      setResult(null);
+      setError(null);
       return;
     }
 
-    setGrams(value);
-    setError(null);
-  };
-
-  const handleCalculate = () => {
-    const parsed = parseGramInput(grams);
+    const parsed = parseGramInput(value);
 
     if (!parsed.valid) {
       setError(parsed.message);
@@ -51,7 +50,7 @@ export const CalculatorCard = ({
       return;
     }
 
-    const gramsValue = convertToGrams(parsed.value, unit);
+    const gramsValue = convertToGrams(parsed.value, nextUnit);
 
     const calculated = calculateMetalValue({
       grams: gramsValue,
@@ -64,15 +63,22 @@ export const CalculatorCard = ({
     setError(null);
   };
 
-  const handleReset = () => {
-    setGrams("");
-    setUnit("g");
-    setResult(null);
-    setError(null);
+  const handleChange = (value: string) => {
+    if (!canAcceptDecimalInput(value)) {
+      return;
+    }
+
+    setGrams(value);
+    calculateFromInput(value);
+  };
+
+  const handleUnitChange = (nextUnit: WeightUnit) => {
+    setUnit(nextUnit);
+    calculateFromInput(grams, nextUnit);
   };
 
   return (
-    <article className="rounded-[2rem] border border-line/80 bg-panel/90 p-6 shadow-luxe backdrop-blur">
+    <article className="rounded-[2rem] border border-accent/35 bg-white p-6 shadow-luxe backdrop-blur">
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-3">
           <div className="inline-flex rounded-full border border-accent/25 bg-accentSoft px-3 py-1 text-xs font-semibold tracking-[0.2em] text-accent uppercase">
@@ -85,17 +91,19 @@ export const CalculatorCard = ({
             </p>
           </div>
         </div>
-        <div className="rounded-2xl border border-line/80 bg-white px-4 py-3 text-right">
-          <p className="text-xs uppercase tracking-[0.18em] text-subink">
-            순도
-          </p>
-          <p className="mt-1 text-lg font-bold text-ink">{purityLabel}</p>
-        </div>
+        {purityLabel && (
+          <div className="rounded-2xl border border-line/80 bg-white px-4 py-3 text-right">
+            <p className="text-xs uppercase tracking-[0.18em] text-subink">
+              순도
+            </p>
+            <p className="mt-1 text-lg font-bold text-ink">{purityLabel}</p>
+          </div>
+        )}
       </div>
 
       <div className="mt-6 space-y-4">
         <label className="block">
-          <span className="mb-2 block text-sm font-medium text-subink">
+          <span className="mb-2 block text-sm font-semibold text-ink">
             {badgeLabel} 중량 입력
           </span>
           <div className="grid grid-cols-[1fr_92px] gap-3">
@@ -103,16 +111,16 @@ export const CalculatorCard = ({
               inputMode="decimal"
               value={grams}
               onChange={(event) => handleChange(event.target.value)}
-              placeholder="예: 3.75"
+              placeholder={inputPlaceholder}
               disabled={disabled}
-              className="h-14 w-full rounded-2xl border border-line bg-white px-4 text-lg text-ink outline-none transition placeholder:text-subink/50 focus:border-accent/50 focus:bg-accentSoft/30 disabled:cursor-not-allowed disabled:opacity-60"
+              className="h-14 w-full rounded-2xl border border-accent bg-white px-4 text-lg text-ink shadow-[0_0_0_1px_rgba(213,159,47,0.18)] outline-none transition placeholder:text-accent/85 focus:border-[#b86b12] focus:bg-accentSoft/35 focus:ring-2 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60"
             />
             <div className="relative">
               <select
                 value={unit}
-                onChange={(event) => setUnit(event.target.value as WeightUnit)}
+                onChange={(event) => handleUnitChange(event.target.value as WeightUnit)}
                 disabled={disabled}
-                className="h-14 w-full appearance-none rounded-2xl border border-line bg-white px-4 pr-10 text-sm font-semibold text-ink outline-none transition focus:border-accent/50 focus:bg-accentSoft/30 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-14 w-full appearance-none rounded-2xl border border-accent bg-white px-4 pr-10 text-sm font-semibold text-ink shadow-[0_0_0_1px_rgba(213,159,47,0.18)] outline-none transition focus:border-[#b86b12] focus:bg-accentSoft/35 focus:ring-2 focus:ring-accent/25 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <option value="g">g</option>
                 <option value="kg">kg</option>
@@ -137,23 +145,6 @@ export const CalculatorCard = ({
           </div>
         </label>
 
-        <div className="grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={handleCalculate}
-            disabled={disabled}
-            className="inline-flex h-12 items-center justify-center rounded-2xl bg-accent px-5 text-sm font-bold text-white transition hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            금액 계산하기
-          </button>
-          <button
-            type="button"
-            onClick={handleReset}
-            className="inline-flex h-12 items-center justify-center rounded-2xl border border-line bg-white px-5 text-sm font-semibold text-ink transition hover:bg-accentSoft/40"
-          >
-            초기화
-          </button>
-        </div>
       </div>
 
       {error && (

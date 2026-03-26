@@ -62,8 +62,8 @@ const App = () => {
             <CalculatorCard
               asset="PLATINUM"
               badgeLabel="백금"
-              purityLabel="실시간 시세"
               description="백금 실시간 시세 기준으로 입력한 중량의 예상 금액을 계산합니다."
+              inputPlaceholder="무게를 입력해 주세요"
               pricePerGramKrw={data ? getAssetPricePerGram(data, "PLATINUM") : 0}
               multiplier={ASSET_MULTIPLIER.PLATINUM}
               disabled={isLoading || !data}
@@ -71,8 +71,8 @@ const App = () => {
             <CalculatorCard
               asset="SILVER"
               badgeLabel="은"
-              purityLabel="실시간 시세"
               description="은 실시간 시세를 기준으로 간단하게 예상 금액을 확인할 수 있습니다."
+              inputPlaceholder="무게를 입력해 주세요"
               pricePerGramKrw={data ? getAssetPricePerGram(data, "SILVER") : 0}
               multiplier={ASSET_MULTIPLIER.SILVER}
               disabled={isLoading || !data}
@@ -80,8 +80,8 @@ const App = () => {
             <CalculatorCard
               asset="PALLADIUM"
               badgeLabel="팔라듐"
-              purityLabel="실시간 시세"
               description="팔라듐 시세를 사용해 입력한 중량의 예상 금액을 계산합니다."
+              inputPlaceholder="무게를 입력해 주세요"
               pricePerGramKrw={data ? getAssetPricePerGram(data, "PALLADIUM") : 0}
               multiplier={ASSET_MULTIPLIER.PALLADIUM}
               disabled={isLoading || !data}
