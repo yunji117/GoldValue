@@ -8,8 +8,8 @@ export const HeroSection = () => {
         <div className="space-y-6">
           <Badge>Gold Price Calculator</Badge>
           <div className="space-y-5">
-            <h1 className="max-w-3xl font-display text-4xl leading-[1.02] tracking-[-0.02em] text-ink md:text-5xl xl:text-6xl">
-              오늘의 금 시세를 바로 계산하는 웹 앱
+            <h1 className="w-full whitespace-nowrap font-display text-[clamp(0.95rem,4.8vw,3.75rem)] leading-[1.05] tracking-[-0.02em] text-ink">
+              오늘 금 시세, 지금 바로 계산하는 웹앱
             </h1>
             <p className="max-w-2xl text-sm leading-7 text-subink md:text-base">
               실시간 금 시세를 기준으로 24K와 18K 예상 금액을 한 화면에서 계산할 수 있는
