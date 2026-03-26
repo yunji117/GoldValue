@@ -35,7 +35,7 @@ const App = () => {
             <CalculatorCard
               asset="24K"
               badgeLabel="24K"
-              purityLabel="순도 100%"
+              purityLabel="순도 99.9%"
               description="순금 기준 시세를 그대로 반영해 예상 금액을 계산합니다."
               pricePerGramKrw={data ? getAssetPricePerGram(data, "24K") : 0}
               multiplier={ASSET_MULTIPLIER["24K"]}

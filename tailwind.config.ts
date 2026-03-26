@@ -21,7 +21,7 @@ export default {
           "radial-gradient(circle at top, rgba(217, 177, 95, 0.25), transparent 35%), radial-gradient(circle at bottom right, rgba(155, 211, 192, 0.16), transparent 25%)"
       },
       fontFamily: {
-        display: ["Cormorant Garamond", "serif"],
+        display: ["Jua", "sans-serif"],
         body: ["Manrope", "sans-serif"]
       }
     }
