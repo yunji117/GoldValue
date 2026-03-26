@@ -32,6 +32,10 @@ export const PriceSummaryCard = ({
             <p className="text-sm leading-6 text-subink">
               24K 순금 3.75g 기준 가격을 중심으로 KRW 시세를 표시합니다.
             </p>
+            <p className="text-xs leading-5 text-subink/80">
+              제공처/환율 기준 시점 차이로 타 사이트와 소폭 오차가 있을 수 있으니 참고용으로
+              확인해 주세요.
+            </p>
           </div>
         </div>
 
