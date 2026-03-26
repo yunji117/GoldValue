@@ -4,9 +4,9 @@ interface BadgeProps {
 }
 
 const toneClassMap = {
-  gold: "bg-accent/15 text-accent border-accent/30",
-  mint: "bg-mint/15 text-mint border-mint/30",
-  danger: "bg-danger/15 text-danger border-danger/30"
+  gold: "border-accent/30 bg-accent/10 text-accent",
+  mint: "border-mint/30 bg-mint/10 text-mint",
+  danger: "border-danger/30 bg-danger/10 text-danger"
 };
 
 export const Badge = ({ tone = "gold", children }: BadgeProps) => {

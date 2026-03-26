@@ -5,13 +5,13 @@
 @tailwind utilities;
 
 :root {
-  color: #f6f3ee;
+  color: #33251a;
   background:
-    radial-gradient(circle at top left, rgba(217, 177, 95, 0.16), transparent 32%),
-    radial-gradient(circle at bottom right, rgba(155, 211, 192, 0.12), transparent 20%),
-    #0d0d0f;
+    radial-gradient(circle at top left, rgba(213, 159, 47, 0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(247, 178, 103, 0.2), transparent 22%),
+    #fffaf2;
   font-family: "Manrope", sans-serif;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 * {
@@ -22,6 +22,11 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  color: #33251a;
+  background:
+    radial-gradient(circle at top left, rgba(213, 159, 47, 0.18), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(247, 178, 103, 0.2), transparent 22%),
+    #fffaf2;
 }
 
 button,

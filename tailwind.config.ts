@@ -5,20 +5,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        surface: "#0d0d0f",
-        panel: "#17171b",
-        line: "#2c2c34",
-        accent: "#d9b15f",
-        accentSoft: "#f7ead0",
-        mint: "#9bd3c0",
-        danger: "#f28b82"
+        surface: "#fffaf2",
+        panel: "#fffdf9",
+        line: "#ecdcc1",
+        accent: "#d59f2f",
+        accentSoft: "#fff1d6",
+        mint: "#78bfa8",
+        danger: "#d96b57",
+        ink: "#33251a",
+        subink: "#7b6856",
+        warm: "#f7b267"
       },
       boxShadow: {
-        luxe: "0 20px 60px rgba(0, 0, 0, 0.28)"
+        luxe: "0 18px 50px rgba(181, 138, 56, 0.14)"
       },
       backgroundImage: {
         grain:
-          "radial-gradient(circle at top, rgba(217, 177, 95, 0.25), transparent 35%), radial-gradient(circle at bottom right, rgba(155, 211, 192, 0.16), transparent 25%)"
+          "radial-gradient(circle at top, rgba(213, 159, 47, 0.22), transparent 35%), radial-gradient(circle at bottom right, rgba(247, 178, 103, 0.2), transparent 24%)"
       },
       fontFamily: {
         display: ["Jua", "sans-serif"],

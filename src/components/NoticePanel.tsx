@@ -1,8 +1,8 @@
 export const NoticePanel = () => {
   return (
-    <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur">
-      <h3 className="text-lg font-semibold text-white">안내 사항</h3>
-      <div className="mt-4 space-y-3 text-sm leading-7 text-white/68">
+    <section className="rounded-[2rem] border border-line/80 bg-panel/80 p-6 backdrop-blur">
+      <h3 className="text-lg font-semibold text-ink">안내 사항</h3>
+      <div className="mt-4 space-y-3 text-sm leading-7 text-subink">
         <p>
           본 계산 결과는 금 시세를 기준으로 한 참고용 금액입니다.
         </p>
