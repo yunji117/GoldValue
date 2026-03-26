@@ -21,7 +21,7 @@ const App = () => {
           onRefresh={() => void refetch()}
         />
 
-        <section className="grid gap-8 xl:grid-cols-[0.95fr_1.05fr]">
+        <section className="space-y-8">
           <div className="space-y-6">
             <SectionTitle
               eyebrow="Calculator"
