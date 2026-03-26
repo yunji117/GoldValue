@@ -30,6 +30,16 @@ export const CalculatorCard = ({
   multiplier,
   disabled = false
 }: CalculatorCardProps) => {
+  const marketPriceForThreePointSevenFiveGrams =
+    pricePerGramKrw > 0
+      ? calculateMetalValue({
+          grams: 3.75,
+          asset,
+          pricePerGramKrw,
+          multiplier
+        }).estimatedPrice
+      : null;
+
   const [grams, setGrams] = useState("");
   const [unit, setUnit] = useState<WeightUnit>("g");
   const [result, setResult] = useState<number | null>(null);
@@ -89,6 +99,14 @@ export const CalculatorCard = ({
             <p className="mt-2 text-sm leading-6 text-subink">
               {description}
             </p>
+            <div className="mt-3 rounded-xl border border-accent/35 bg-accentSoft/30 px-3 py-2">
+              <p className="text-xs text-subink">실시간 시세 기준 (3.75g)</p>
+              <p className="mt-1 text-base font-bold text-ink">
+                {marketPriceForThreePointSevenFiveGrams === null
+                  ? "-"
+                  : formatKrw(marketPriceForThreePointSevenFiveGrams)}
+              </p>
+            </div>
           </div>
         </div>
         {purityLabel && (
