@@ -1,8 +1,10 @@
 import { CalculatorCard } from "./components/CalculatorCard";
+import { ContactSection } from "./components/ContactSection";
 import { HeroSection } from "./components/HeroSection";
 import { NoticePanel } from "./components/NoticePanel";
 import { PriceSummaryCard } from "./components/PriceSummaryCard";
 import { SectionTitle } from "./components/SectionTitle";
+import { ServiceGuideSection } from "./components/ServiceGuideSection";
 import { useGoldPrice } from "./hooks/useGoldPrice";
 import { ASSET_MULTIPLIER, getAssetPricePerGram } from "./lib/gold";
 
@@ -88,6 +90,9 @@ const App = () => {
             />
           </div>
         </section>
+
+        <ServiceGuideSection />
+        <ContactSection />
       </div>
     </div>
   );
