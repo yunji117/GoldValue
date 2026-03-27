@@ -1,8 +1,8 @@
-import { CACHE_TTL_MS } from "./_lib/constants";
-import { buildPricesPayload } from "./_lib/calculate";
-import { fetchMetalSpotPrices } from "./_lib/metal-api";
-import { mockPricesResponse } from "./_lib/mock";
-import type { PricesResponse } from "./_lib/types";
+import { CACHE_TTL_MS } from "./_lib/constants.js";
+import { buildPricesPayload } from "./_lib/calculate.js";
+import { fetchMetalSpotPrices } from "./_lib/metal-api.js";
+import { mockPricesResponse } from "./_lib/mock.js";
+import type { PricesResponse } from "./_lib/types.js";
 
 type CacheStore = {
   expiresAt: number;

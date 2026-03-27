@@ -1,4 +1,4 @@
-import type { PricesResponse } from "./types";
+import type { PricesResponse } from "./types.js";
 
 export const mockPricesResponse = (): PricesResponse => ({
   // 실제 API 연결 전 테스트용 mock 데이터

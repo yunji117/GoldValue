@@ -1,4 +1,4 @@
-import type { ApisedLatestResponse, ApisedMetalValue } from "./types";
+import type { ApisedLatestResponse, ApisedMetalValue } from "./types.js";
 
 const DEFAULT_METAL_API_BASE_URL = "https://gold.g.apised.com/v1/latest";
 

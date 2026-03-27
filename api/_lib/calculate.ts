@@ -1,5 +1,5 @@
-import { GOLD_PURITY } from "./constants";
-import type { PricesResponse } from "./types";
+import { GOLD_PURITY } from "./constants.js";
+import type { PricesResponse } from "./types.js";
 
 export const roundPrice = (value: number) => Math.round(value);
 
