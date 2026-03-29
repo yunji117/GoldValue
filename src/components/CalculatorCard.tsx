@@ -87,6 +87,16 @@ export const CalculatorCard = ({
     calculateFromInput(grams, nextUnit);
   };
 
+  const formattedMarketPrice =
+    marketPriceForThreePointSevenFiveGrams === null
+      ? "-"
+      : `약 ${formatKrw(marketPriceForThreePointSevenFiveGrams)}`;
+  const buyEstimate = result;
+  const sellEstimate = result;
+
+  const formatEstimate = (value: number | null) =>
+    value === null ? "-" : `약 ${formatKrw(value)}`;
+
   return (
     <article className="rounded-[2rem] border border-accent/35 bg-white p-6 shadow-luxe backdrop-blur">
       <div className="flex items-start justify-between gap-4">
@@ -102,9 +112,7 @@ export const CalculatorCard = ({
             <div className="mt-3 rounded-xl border border-accent/35 bg-accentSoft/30 px-3 py-2">
               <p className="text-xs text-subink">실시간 시세 기준 (3.75g)</p>
               <p className="mt-1 text-base font-bold text-ink">
-                {marketPriceForThreePointSevenFiveGrams === null
-                  ? "-"
-                  : formatKrw(marketPriceForThreePointSevenFiveGrams)}
+                {formattedMarketPrice}
               </p>
             </div>
           </div>
@@ -173,15 +181,27 @@ export const CalculatorCard = ({
 
       <div className="mt-5 rounded-[1.75rem] border border-line/80 bg-gradient-to-br from-accentSoft/70 to-white p-5">
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <p className="text-sm text-subink">예상 금액</p>
-            <p className="mt-1 text-xs text-subink/80">
-              입력값 {grams ? `${formatNumber(Number(grams), 3)}${unit}` : "대기 중"}
+          <p className="text-sm text-subink">예상 금액</p>
+          <p className="text-xs text-subink/80 text-right">
+            입력값 {grams ? `${formatNumber(Number(grams), 3)}${unit}` : "대기 중"}
+          </p>
+        </div>
+
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-2xl border border-line/70 bg-white/80 px-4 py-4">
+            <p className="text-xs font-semibold tracking-[0.08em] text-subink">
+              살 때 금액
+            </p>
+            <p className="mt-2 text-xl font-extrabold text-ink md:text-2xl">
+              {formatEstimate(buyEstimate)}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-2xl font-extrabold text-ink md:text-3xl">
-              {result === null ? "-" : formatKrw(result)}
+          <div className="rounded-2xl border border-line/70 bg-white/80 px-4 py-4">
+            <p className="text-xs font-semibold tracking-[0.08em] text-subink">
+              팔 때 금액
+            </p>
+            <p className="mt-2 text-xl font-extrabold text-ink md:text-2xl">
+              {formatEstimate(sellEstimate)}
             </p>
           </div>
         </div>
