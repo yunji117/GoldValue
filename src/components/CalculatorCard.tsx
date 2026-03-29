@@ -90,12 +90,32 @@ export const CalculatorCard = ({
   const formattedMarketPrice =
     marketPriceForThreePointSevenFiveGrams === null
       ? "-"
-      : `약 ${formatKrw(marketPriceForThreePointSevenFiveGrams)}`;
+      : `약\u00A0${formatKrw(marketPriceForThreePointSevenFiveGrams)}`;
   const buyEstimate = result;
   const sellEstimate = result;
 
   const formatEstimate = (value: number | null) =>
-    value === null ? "-" : `약 ${formatKrw(value)}`;
+    value === null ? "-" : `약\u00A0${formatKrw(value)}`;
+  const buyEstimateLabel = formatEstimate(buyEstimate);
+  const sellEstimateLabel = formatEstimate(sellEstimate);
+
+  const getEstimateTextSizeClass = (estimateLabel: string) => {
+    const length = estimateLabel.length;
+
+    if (length >= 18) {
+      return "text-[0.72rem] sm:text-[0.8rem] md:text-[0.8rem]";
+    }
+
+    if (length >= 15) {
+      return "text-[0.8rem] sm:text-[0.9rem] md:text-[0.9rem]";
+    }
+
+    if (length >= 13) {
+      return "text-[0.9rem] sm:text-[1rem] md:text-[1rem]";
+    }
+
+    return "text-[1rem] sm:text-[1.1rem] md:text-[1.05rem]";
+  };
 
   return (
     <article className="rounded-[2rem] border border-accent/35 bg-white p-6 shadow-luxe backdrop-blur">
@@ -111,7 +131,7 @@ export const CalculatorCard = ({
             </p>
             <div className="mt-3 rounded-xl border border-accent/35 bg-accentSoft/30 px-3 py-2">
               <p className="text-xs text-subink">실시간 시세 기준 (3.75g)</p>
-              <p className="mt-1 text-base font-bold text-ink">
+              <p className="mt-1 whitespace-nowrap text-base font-bold text-ink">
                 {formattedMarketPrice}
               </p>
             </div>
@@ -188,20 +208,28 @@ export const CalculatorCard = ({
         </div>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-2xl border border-line/70 bg-white/80 px-4 py-4">
+          <div className="min-w-0 rounded-2xl border border-line/70 bg-white/80 px-3 py-3 sm:px-4 sm:py-4">
             <p className="text-xs font-semibold tracking-[0.08em] text-subink">
               살 때 금액
             </p>
-            <p className="mt-2 text-xl font-extrabold text-ink md:text-2xl">
-              {formatEstimate(buyEstimate)}
+            <p
+              className={`mt-2 w-full min-w-0 whitespace-nowrap leading-tight font-extrabold tracking-tight text-ink ${getEstimateTextSizeClass(
+                buyEstimateLabel
+              )}`}
+            >
+              {buyEstimateLabel}
             </p>
           </div>
-          <div className="rounded-2xl border border-line/70 bg-white/80 px-4 py-4">
+          <div className="min-w-0 rounded-2xl border border-line/70 bg-white/80 px-3 py-3 sm:px-4 sm:py-4">
             <p className="text-xs font-semibold tracking-[0.08em] text-subink">
               팔 때 금액
             </p>
-            <p className="mt-2 text-xl font-extrabold text-ink md:text-2xl">
-              {formatEstimate(sellEstimate)}
+            <p
+              className={`mt-2 w-full min-w-0 whitespace-nowrap leading-tight font-extrabold tracking-tight text-ink ${getEstimateTextSizeClass(
+                sellEstimateLabel
+              )}`}
+            >
+              {sellEstimateLabel}
             </p>
           </div>
         </div>
