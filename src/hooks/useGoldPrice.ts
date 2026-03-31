@@ -15,11 +15,16 @@ export const useGoldPrice = () => {
       const result = await getGoldPrice();
       setData(result);
 
-      if (result.source === "mock") {
-        setError("실시간 API 연결 전 또는 실패 상태입니다. 현재는 mock 데이터가 표시됩니다.");
+      if (result.source === "fallback") {
+        setError(
+          result.note ??
+            "실시간 시세 연결에 실패해 fallback 데이터가 표시됩니다. 운영 환경에서는 API 오류 안내가 표시됩니다."
+        );
+      } else if (result.fallbackUsed && result.note) {
+        setError(result.note);
       }
-    } catch {
-      setError("금 시세를 불러오지 못했습니다.");
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "금 시세를 불러오지 못했습니다.");
     } finally {
       setIsLoading(false);
     }

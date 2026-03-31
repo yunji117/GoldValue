@@ -6,27 +6,45 @@ export type AssetCode =
   | "SILVER"
   | "PALLADIUM";
 
-export interface LivePriceItem {
-  label: string;
-  pricePerGramKrw: number;
-  pricePerOunceKrw: number;
+export type MarketSymbol = "XAU" | "XAG" | "XPT" | "XPD";
+
+export interface AssetPriceItem {
+  displayName: string;
+  symbol: MarketSymbol;
+  purityRatio: number;
+  buyPremiumMultiplier: number;
+  buyVatRate: number;
+  buyFixedKrwPerGram: number;
+  sellDiscountMultiplier: number;
+  sellFixedKrwPerGram: number;
+  marketPricePerGramKrw: number;
+  buyPricePerGramKrw: number;
+  sellPricePerGramKrw: number;
+  marketPricePerOunceKrw: number;
+  buyPricePerOunceKrw: number;
+  sellPricePerOunceKrw: number;
+  marketPriceForThreePointSevenFiveGramKrw: number;
+  buyPriceForThreePointSevenFiveGramKrw: number;
+  sellPriceForThreePointSevenFiveGramKrw: number;
+}
+
+export interface ExchangeRateInfo {
+  baseCurrency: "USD";
+  quoteCurrency: "KRW";
+  rate: number;
+  source: string;
 }
 
 export interface GoldPriceData {
-  prices: Record<"gold" | "silver" | "platinum" | "palladium", LivePriceItem>;
+  assets: Record<AssetCode, AssetPriceItem>;
   updatedAt: string;
-  source: "live" | "mock";
+  source: "live" | "fallback";
+  fallbackUsed: boolean;
   provider: string;
   currency: "KRW";
+  exchangeRate: ExchangeRateInfo;
 }
 
 export interface GoldPriceApiResponse extends GoldPriceData {
   note?: string;
-}
-
-export interface CalculationResult {
-  asset: AssetCode;
-  grams: number;
-  multiplier: number;
-  estimatedPrice: number;
 }

@@ -32,7 +32,7 @@ export const ServiceGuideSection = () => {
           <ol className="mt-2 space-y-2 text-sm leading-6 text-subink">
             <li>1. 귀금속 카드를 선택하고 무게(g 또는 kg)를 입력합니다.</li>
             <li>2. 입력 즉시 예상 금액이 자동 계산됩니다.</li>
-            <li>3. 실시간 API 지연 시 mock 데이터가 안내와 함께 표시될 수 있습니다.</li>
+            <li>3. 오류 시 화면 상단에 안내 문구가 표시됩니다.</li>
           </ol>
         </article>
 
@@ -47,4 +47,3 @@ export const ServiceGuideSection = () => {
     </section>
   );
 };
-

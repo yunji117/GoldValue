@@ -1,5 +1,6 @@
 import { CACHE_TTL_MS } from "./_lib/constants.js";
 import { buildPricesPayload } from "./_lib/calculate.js";
+import { resolveUsdKrwExchangeRate } from "./_lib/exchange-rate.js";
 import { fetchMetalSpotPrices } from "./_lib/metal-api.js";
 import { mockPricesResponse } from "./_lib/mock.js";
 import type { PricesResponse } from "./_lib/types.js";
@@ -55,27 +56,41 @@ export default async function handler(req: any, res: any) {
   }
 
   try {
-    const metalSpotPrices = await fetchMetalSpotPrices();
+    const [metalSpotPrices, exchangeRate] = await Promise.all([
+      fetchMetalSpotPrices(),
+      resolveUsdKrwExchangeRate()
+    ]);
 
     const payload = buildPricesPayload({
-      gold24kPerGram: metalSpotPrices.gold24kPerGram,
-      silverPerGram: metalSpotPrices.silverPerGram,
-      platinumPerGram: metalSpotPrices.platinumPerGram,
-      palladiumPerGram: metalSpotPrices.palladiumPerGram,
-      updatedAt: metalSpotPrices.updatedAt
+      usdPerOunceBySymbol: metalSpotPrices.usdPerOunceBySymbol,
+      updatedAt: metalSpotPrices.updatedAt,
+      source: "live",
+      provider: metalSpotPrices.provider,
+      fallbackUsed: exchangeRate.fallbackUsed,
+      exchangeRate: exchangeRate.info,
+      note: exchangeRate.note
     });
 
     saveCachePayload(payload);
-
     return res.status(200).json(payload);
   } catch (error) {
-    const fallbackPayload = {
-      ...mockPricesResponse(),
-      note:
-        error instanceof Error
-          ? `External API failed, fallback mock data is returned: ${error.message}`
-          : "External API failed, fallback mock data is returned."
-    };
+    const allowFallback =
+      process.env.NODE_ENV !== "production" || process.env.ALLOW_MOCK_FALLBACK === "true";
+
+    if (!allowFallback) {
+      return res.status(502).json({
+        message:
+          error instanceof Error
+            ? `실시간 시세를 불러오지 못했습니다: ${error.message}`
+            : "실시간 시세를 불러오지 못했습니다."
+      });
+    }
+
+    const fallbackPayload = mockPricesResponse(
+      error instanceof Error
+        ? `실시간 API 실패로 개발용 fallback 데이터를 사용합니다: ${error.message}`
+        : "실시간 API 실패로 개발용 fallback 데이터를 사용합니다."
+    );
 
     saveCachePayload(fallbackPayload);
 

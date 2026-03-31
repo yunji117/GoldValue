@@ -1,30 +1,64 @@
-export interface ApisedMetalValue {
-  KRW?: number | string;
+export type MarketSymbol = "XAU" | "XAG" | "XPT" | "XPD";
+
+export type AssetCode =
+  | "24K"
+  | "18K"
+  | "14K"
+  | "PLATINUM"
+  | "SILVER"
+  | "PALLADIUM";
+
+export interface GoldApiPriceResponse {
+  currency?: string;
+  currencySymbol?: string;
+  exchangeRate?: number;
+  name?: string;
   price?: number | string;
-  value?: number | string;
-  ask?: number | string;
-  bid?: number | string;
+  symbol?: string;
+  updatedAt?: string;
+  updatedAtReadable?: string;
 }
 
-export interface ApisedLatestResponse {
-  success?: boolean;
-  status?: string;
-  timestamp?: number;
-  date?: string;
-  updatedAt?: string;
-  data?: Record<string, unknown>;
-  rates?: Record<string, unknown>;
-  result?: Record<string, unknown>;
+export interface ExchangeRateInfo {
+  baseCurrency: "USD";
+  quoteCurrency: "KRW";
+  rate: number;
+  source: string;
+}
+
+export interface ExchangeRateResolveResult {
+  info: ExchangeRateInfo;
+  fallbackUsed: boolean;
+  note?: string;
+}
+
+export interface AssetPriceItem {
+  displayName: string;
+  symbol: MarketSymbol;
+  purityRatio: number;
+  buyPremiumMultiplier: number;
+  buyVatRate: number;
+  buyFixedKrwPerGram: number;
+  sellDiscountMultiplier: number;
+  sellFixedKrwPerGram: number;
+  marketPricePerGramKrw: number;
+  buyPricePerGramKrw: number;
+  sellPricePerGramKrw: number;
+  marketPricePerOunceKrw: number;
+  buyPricePerOunceKrw: number;
+  sellPricePerOunceKrw: number;
+  marketPriceForThreePointSevenFiveGramKrw: number;
+  buyPriceForThreePointSevenFiveGramKrw: number;
+  sellPriceForThreePointSevenFiveGramKrw: number;
 }
 
 export interface PricesResponse {
-  gold24kPerGram: number;
-  gold18kPerGram: number;
-  gold14kPerGram: number;
-  silverPerGram: number;
-  platinumPerGram: number;
-  palladiumPerGram: number;
+  assets: Record<AssetCode, AssetPriceItem>;
   updatedAt: string;
-  source: "live" | "mock";
+  source: "live" | "fallback";
+  provider: string;
+  currency: "KRW";
+  fallbackUsed: boolean;
+  exchangeRate: ExchangeRateInfo;
   note?: string;
 }

@@ -15,8 +15,9 @@ interface CalculatorCardProps {
   purityLabel?: string;
   description: string;
   inputPlaceholder?: string;
-  pricePerGramKrw?: number;
-  multiplier?: number;
+  marketPricePerGramKrw?: number;
+  buyPricePerGramKrw?: number;
+  sellPricePerGramKrw?: number;
   disabled?: boolean;
 }
 
@@ -26,28 +27,29 @@ export const CalculatorCard = ({
   purityLabel,
   description,
   inputPlaceholder = "무게를 입력해 주세요",
-  pricePerGramKrw = 0,
-  multiplier,
+  marketPricePerGramKrw = 0,
+  buyPricePerGramKrw = 0,
+  sellPricePerGramKrw = 0,
   disabled = false
 }: CalculatorCardProps) => {
   const marketPriceForThreePointSevenFiveGrams =
-    pricePerGramKrw > 0
+    marketPricePerGramKrw > 0
       ? calculateMetalValue({
           grams: 3.75,
-          asset,
-          pricePerGramKrw,
-          multiplier
-        }).estimatedPrice
+          pricePerGramKrw: marketPricePerGramKrw
+        })
       : null;
 
   const [grams, setGrams] = useState("");
   const [unit, setUnit] = useState<WeightUnit>("g");
-  const [result, setResult] = useState<number | null>(null);
+  const [buyResult, setBuyResult] = useState<number | null>(null);
+  const [sellResult, setSellResult] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const calculateFromInput = (value: string, nextUnit: WeightUnit = unit) => {
     if (!value.trim()) {
-      setResult(null);
+      setBuyResult(null);
+      setSellResult(null);
       setError(null);
       return;
     }
@@ -56,20 +58,25 @@ export const CalculatorCard = ({
 
     if (!parsed.valid) {
       setError(parsed.message);
-      setResult(null);
+      setBuyResult(null);
+      setSellResult(null);
       return;
     }
 
     const gramsValue = convertToGrams(parsed.value, nextUnit);
 
-    const calculated = calculateMetalValue({
-      grams: gramsValue,
-      asset,
-      pricePerGramKrw,
-      multiplier
-    });
-
-    setResult(calculated.estimatedPrice);
+    setBuyResult(
+      calculateMetalValue({
+        grams: gramsValue,
+        pricePerGramKrw: buyPricePerGramKrw
+      })
+    );
+    setSellResult(
+      calculateMetalValue({
+        grams: gramsValue,
+        pricePerGramKrw: sellPricePerGramKrw
+      })
+    );
     setError(null);
   };
 
@@ -91,8 +98,8 @@ export const CalculatorCard = ({
     marketPriceForThreePointSevenFiveGrams === null
       ? "-"
       : `약\u00A0${formatKrw(marketPriceForThreePointSevenFiveGrams)}`;
-  const buyEstimate = result;
-  const sellEstimate = result;
+  const buyEstimate = buyResult;
+  const sellEstimate = sellResult;
 
   const formatEstimate = (value: number | null) =>
     value === null ? "-" : `약\u00A0${formatKrw(value)}`;

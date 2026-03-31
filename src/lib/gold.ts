@@ -1,4 +1,4 @@
-import type { AssetCode, CalculationResult, GoldPriceApiResponse } from "../types/gold";
+import type { AssetCode, GoldPriceApiResponse } from "../types/gold";
 
 export type WeightUnit = "g" | "kg";
 
@@ -12,36 +12,13 @@ type GramInputParseResult =
       message: string;
     };
 
-export const ASSET_MULTIPLIER: Record<AssetCode, number> = {
-  "24K": 1,
-  "18K": 0.75,
-  "14K": 0.585,
-  PLATINUM: 1,
-  SILVER: 1,
-  PALLADIUM: 1
-};
-
 export const calculateMetalValue = ({
   grams,
-  asset,
-  pricePerGramKrw,
-  multiplier
+  pricePerGramKrw
 }: {
   grams: number;
-  asset: AssetCode;
   pricePerGramKrw: number;
-  multiplier?: number;
-}): CalculationResult => {
-  const appliedMultiplier = multiplier ?? ASSET_MULTIPLIER[asset];
-  const estimatedPrice = grams * pricePerGramKrw * appliedMultiplier;
-
-  return {
-    asset,
-    grams,
-    multiplier: appliedMultiplier,
-    estimatedPrice
-  };
-};
+}) => grams * pricePerGramKrw;
 
 export const parseGramInput = (value: string): GramInputParseResult => {
   const parsed = Number(value);
@@ -71,21 +48,7 @@ export const canAcceptDecimalInput = (value: string) =>
 export const convertToGrams = (value: number, unit: WeightUnit) =>
   unit === "kg" ? value * 1000 : value;
 
-export const getAssetPricePerGram = (
+export const getAssetPriceItem = (
   data: GoldPriceApiResponse,
   asset: AssetCode
-) => {
-  if (asset === "24K" || asset === "18K" || asset === "14K") {
-    return data.prices.gold.pricePerGramKrw;
-  }
-
-  if (asset === "PLATINUM") {
-    return data.prices.platinum.pricePerGramKrw;
-  }
-
-  if (asset === "SILVER") {
-    return data.prices.silver.pricePerGramKrw;
-  }
-
-  return data.prices.palladium.pricePerGramKrw;
-};
+) => data.assets[asset];

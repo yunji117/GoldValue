@@ -6,10 +6,12 @@ import { PriceSummaryCard } from "./components/PriceSummaryCard";
 import { SectionTitle } from "./components/SectionTitle";
 import { ServiceGuideSection } from "./components/ServiceGuideSection";
 import { useGoldPrice } from "./hooks/useGoldPrice";
-import { ASSET_MULTIPLIER, getAssetPricePerGram } from "./lib/gold";
+import { getAssetPriceItem } from "./lib/gold";
+import type { AssetCode } from "./types/gold";
 
 const App = () => {
   const { data, isLoading, error, refetch } = useGoldPrice();
+  const getAsset = (asset: AssetCode) => (data ? getAssetPriceItem(data, asset) : null);
 
   return (
     <div className="min-h-screen bg-surface text-ink">
@@ -39,8 +41,9 @@ const App = () => {
               badgeLabel="24K"
               purityLabel="99.9%"
               description="순금 기준 시세를 그대로 반영해 예상 금액을 계산합니다."
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "24K") : 0}
-              multiplier={ASSET_MULTIPLIER["24K"]}
+              marketPricePerGramKrw={getAsset("24K")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("24K")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("24K")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
             <CalculatorCard
@@ -48,8 +51,9 @@ const App = () => {
               badgeLabel="18K"
               purityLabel="75%"
               description="24K 기준 시세에 75% 순도를 적용해 현실적인 참고 금액을 보여줍니다."
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "18K") : 0}
-              multiplier={ASSET_MULTIPLIER["18K"]}
+              marketPricePerGramKrw={getAsset("18K")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("18K")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("18K")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
             <CalculatorCard
@@ -57,8 +61,9 @@ const App = () => {
               badgeLabel="14K"
               purityLabel="58.5%"
               description="24K 금 시세 기준으로 58.5% 순도를 반영해 14K 예상 금액을 계산합니다."
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "14K") : 0}
-              multiplier={ASSET_MULTIPLIER["14K"]}
+              marketPricePerGramKrw={getAsset("14K")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("14K")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("14K")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
             <CalculatorCard
@@ -66,8 +71,9 @@ const App = () => {
               badgeLabel="백금"
               description="백금 실시간 시세 기준으로 입력한 중량의 예상 금액을 계산합니다."
               inputPlaceholder="무게를 입력해 주세요"
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "PLATINUM") : 0}
-              multiplier={ASSET_MULTIPLIER.PLATINUM}
+              marketPricePerGramKrw={getAsset("PLATINUM")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("PLATINUM")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("PLATINUM")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
             <CalculatorCard
@@ -75,8 +81,9 @@ const App = () => {
               badgeLabel="은"
               description="은 실시간 시세를 기준으로 간단하게 예상 금액을 확인할 수 있습니다."
               inputPlaceholder="무게를 입력해 주세요"
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "SILVER") : 0}
-              multiplier={ASSET_MULTIPLIER.SILVER}
+              marketPricePerGramKrw={getAsset("SILVER")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("SILVER")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("SILVER")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
             <CalculatorCard
@@ -84,8 +91,9 @@ const App = () => {
               badgeLabel="팔라듐"
               description="팔라듐 시세를 사용해 입력한 중량의 예상 금액을 계산합니다."
               inputPlaceholder="무게를 입력해 주세요"
-              pricePerGramKrw={data ? getAssetPricePerGram(data, "PALLADIUM") : 0}
-              multiplier={ASSET_MULTIPLIER.PALLADIUM}
+              marketPricePerGramKrw={getAsset("PALLADIUM")?.marketPricePerGramKrw ?? 0}
+              buyPricePerGramKrw={getAsset("PALLADIUM")?.buyPricePerGramKrw ?? 0}
+              sellPricePerGramKrw={getAsset("PALLADIUM")?.sellPricePerGramKrw ?? 0}
               disabled={isLoading || !data}
             />
           </div>
