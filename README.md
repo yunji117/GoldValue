@@ -74,9 +74,9 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
   - `sellFixedKrwPerGram`
 - 위 값만 바꾸면 전체 계산 결과가 즉시 반영됩니다.
 
-### 목표 시세 자동 정렬(무크롤링)
+### 목표 시세 자동 정렬
 
-- 서버는 외부 사이트를 직접 크롤링하지 않습니다.
+- 서버는 입력된 목표값 환경변수를 기준으로 자동 보정합니다.
 - `PRICE_ALIGN_TARGET_*` 환경변수를 넣으면 Gold API 계산 결과를 목표값에 맞춰 자동 보정합니다.
 - 기본은 `24K`를 기준으로 맞추고(`PRICE_ALIGN_PROPAGATE_GOLD=true`), 필요하면 자산별 목표값을 따로 입력할 수 있습니다.
 - KST 시간대별로 `_00`, `_12`, `_18` suffix 값이 있으면 해당 슬롯 값이 우선 적용됩니다.
