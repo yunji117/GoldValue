@@ -35,6 +35,12 @@ export interface ExchangeRateInfo {
   source: string;
 }
 
+export interface PriceAlignmentInfo {
+  mode: "none" | "env-targets";
+  slotKst: "00" | "12" | "18";
+  appliedAssets: AssetCode[];
+}
+
 export interface GoldPriceData {
   assets: Record<AssetCode, AssetPriceItem>;
   updatedAt: string;
@@ -43,6 +49,7 @@ export interface GoldPriceData {
   provider: string;
   currency: "KRW";
   exchangeRate: ExchangeRateInfo;
+  alignment: PriceAlignmentInfo;
 }
 
 export interface GoldPriceApiResponse extends GoldPriceData {

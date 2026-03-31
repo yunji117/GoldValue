@@ -58,9 +58,10 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
 1. 프론트가 `/api/prices`를 호출합니다.
 2. 서버 함수가 Gold API에서 `XAU`, `XAG`, `XPT`, `XPD` spot 가격(USD/oz)을 조회합니다.
 3. 서버에서 USD/KRW 환율을 적용해 KRW/g로 변환하고, 금속별 `purityRatio`, `buyPremiumMultiplier`, `buyVatRate`, `sellDiscountMultiplier`, `buy/sell 고정 오프셋`을 반영합니다.
-4. 응답은 메모리 캐시(기본 60초) 후 반환됩니다.
-5. 운영 환경에서는 외부 API 실패 시 오류를 반환하고, 개발 환경에서는 fallback 데이터를 선택적으로 사용할 수 있습니다.
-6. 상단 요약 카드는 24K `내가 살 때(3.75g)`와 `내가 팔 때(3.75g)`를 표시합니다.
+4. (선택) `PRICE_ALIGN_TARGET_*` 환경변수가 있으면 목표 시세(예: 24K 3.75g)를 기준으로 자동 보정합니다.
+5. 응답은 메모리 캐시(기본 60초) 후 반환됩니다.
+6. 운영 환경에서는 외부 API 실패 시 오류를 반환하고, 개발 환경에서는 fallback 데이터를 선택적으로 사용할 수 있습니다.
+7. 상단 요약 카드는 24K `내가 살 때(3.75g)`와 `내가 팔 때(3.75g)`를 표시합니다.
 
 ### 국내 시세 근접 보정 방법
 
@@ -72,6 +73,13 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
   - `sellDiscountMultiplier`
   - `sellFixedKrwPerGram`
 - 위 값만 바꾸면 전체 계산 결과가 즉시 반영됩니다.
+
+### 목표 시세 자동 정렬(무크롤링)
+
+- 서버는 외부 사이트를 직접 크롤링하지 않습니다.
+- `PRICE_ALIGN_TARGET_*` 환경변수를 넣으면 Gold API 계산 결과를 목표값에 맞춰 자동 보정합니다.
+- 기본은 `24K`를 기준으로 맞추고(`PRICE_ALIGN_PROPAGATE_GOLD=true`), 필요하면 자산별 목표값을 따로 입력할 수 있습니다.
+- KST 시간대별로 `_00`, `_12`, `_18` suffix 값이 있으면 해당 슬롯 값이 우선 적용됩니다.
 
 ## 문의 기능 흐름 (요약)
 
@@ -116,6 +124,21 @@ EXCHANGE_RATE_API_KEY=
 
 # 운영 환경에서 fallback mock 허용 여부
 ALLOW_MOCK_FALLBACK=false
+
+# (선택) 목표 시세 자동 정렬
+# 24K 3.75g 기준 (기본/시간대별)
+PRICE_ALIGN_PROPAGATE_GOLD=true
+PRICE_ALIGN_TARGET_BUY_24K_3_75G=
+PRICE_ALIGN_TARGET_SELL_24K_3_75G=
+PRICE_ALIGN_TARGET_BUY_24K_3_75G_00=
+PRICE_ALIGN_TARGET_SELL_24K_3_75G_00=
+PRICE_ALIGN_TARGET_BUY_24K_3_75G_12=
+PRICE_ALIGN_TARGET_SELL_24K_3_75G_12=
+PRICE_ALIGN_TARGET_BUY_24K_3_75G_18=
+PRICE_ALIGN_TARGET_SELL_24K_3_75G_18=
+# (선택) 자산별 정렬
+# PRICE_ALIGN_TARGET_BUY_PLATINUM_3_75G=
+# PRICE_ALIGN_TARGET_SELL_PLATINUM_3_75G=
 
 # 문의 메일 전송용 (Resend)
 RESEND_API_KEY=your_resend_api_key

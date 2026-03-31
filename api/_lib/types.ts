@@ -52,6 +52,12 @@ export interface AssetPriceItem {
   sellPriceForThreePointSevenFiveGramKrw: number;
 }
 
+export interface PriceAlignmentInfo {
+  mode: "none" | "env-targets";
+  slotKst: "00" | "12" | "18";
+  appliedAssets: AssetCode[];
+}
+
 export interface PricesResponse {
   assets: Record<AssetCode, AssetPriceItem>;
   updatedAt: string;
@@ -60,5 +66,6 @@ export interface PricesResponse {
   currency: "KRW";
   fallbackUsed: boolean;
   exchangeRate: ExchangeRateInfo;
+  alignment: PriceAlignmentInfo;
   note?: string;
 }
