@@ -39,6 +39,20 @@ export const CalculatorCard = ({
           pricePerGramKrw: marketPricePerGramKrw
         })
       : null;
+  const buyPriceForThreePointSevenFiveGrams =
+    buyPricePerGramKrw > 0
+      ? calculateMetalValue({
+          grams: 3.75,
+          pricePerGramKrw: buyPricePerGramKrw
+        })
+      : null;
+  const sellPriceForThreePointSevenFiveGrams =
+    sellPricePerGramKrw > 0
+      ? calculateMetalValue({
+          grams: 3.75,
+          pricePerGramKrw: sellPricePerGramKrw
+        })
+      : null;
 
   const [grams, setGrams] = useState("");
   const [unit, setUnit] = useState<WeightUnit>("g");
@@ -98,6 +112,14 @@ export const CalculatorCard = ({
     marketPriceForThreePointSevenFiveGrams === null
       ? "-"
       : `약\u00A0${formatKrw(marketPriceForThreePointSevenFiveGrams)}`;
+  const formattedBuyPrice =
+    buyPriceForThreePointSevenFiveGrams === null
+      ? "-"
+      : `약\u00A0${formatKrw(buyPriceForThreePointSevenFiveGrams)}`;
+  const formattedSellPrice =
+    sellPriceForThreePointSevenFiveGrams === null
+      ? "-"
+      : `약\u00A0${formatKrw(sellPriceForThreePointSevenFiveGrams)}`;
   const buyEstimate = buyResult;
   const sellEstimate = sellResult;
 
@@ -137,9 +159,23 @@ export const CalculatorCard = ({
               {description}
             </p>
             <div className="mt-3 rounded-xl border border-accent/35 bg-accentSoft/30 px-3 py-2">
-              <p className="text-xs text-subink">실시간 시세 기준 (3.75g)</p>
-              <p className="mt-1 whitespace-nowrap text-base font-bold text-ink">
-                {formattedMarketPrice}
+              <p className="text-xs text-subink">시세 기준 (3.75g)</p>
+              <div className="mt-1 grid grid-cols-2 gap-3">
+                <div>
+                  <p className="text-[11px] text-subink/80">내가 살 때</p>
+                  <p className="whitespace-nowrap text-sm font-bold text-ink">
+                    {formattedBuyPrice}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[11px] text-subink/80">내가 팔 때</p>
+                  <p className="whitespace-nowrap text-sm font-bold text-ink">
+                    {formattedSellPrice}
+                  </p>
+                </div>
+              </div>
+              <p className="mt-2 text-[11px] text-subink/70">
+                실시간 기준가: {formattedMarketPrice}
               </p>
             </div>
           </div>
