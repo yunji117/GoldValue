@@ -91,11 +91,18 @@ export default async function handler(req: any, res: any) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const toEmail = process.env.CONTACT_TO_EMAIL;
   const fromEmail = process.env.CONTACT_FROM_EMAIL;
+  const missingEnvKeys = [
+    ["RESEND_API_KEY", resendApiKey],
+    ["CONTACT_TO_EMAIL", toEmail],
+    ["CONTACT_FROM_EMAIL", fromEmail]
+  ]
+    .filter(([, value]) => !value?.trim())
+    .map(([key]) => key);
 
-  if (!resendApiKey || !toEmail || !fromEmail) {
+  if (missingEnvKeys.length > 0) {
     return res.status(500).json({
       ok: false,
-      message: "문의 메일 기능이 아직 설정되지 않았습니다."
+      message: `문의 메일 기능이 아직 설정되지 않았습니다. 누락: ${missingEnvKeys.join(", ")}`
     });
   }
 
