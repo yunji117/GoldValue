@@ -12,7 +12,7 @@ export const HeroSection = () => {
               오늘 금 시세, 지금 바로 계산하는 웹
             </h1>
             <p className="max-w-4xl text-sm leading-7 text-subink md:text-base lg:text-lg">
-              실시간 금 시세를 기준으로 24K와 18K 예상 금액을 한 화면에서 계산할 수 있는 프리미엄 골드 시세 계산기입니다. 
+              실시간 금 시세를 기준으로 24K와 18K 등등 예상 금액을 한 화면에서 계산할 수 있는 프리미엄 골드 시세 계산기입니다. 
               < br/>
               랜딩 페이지와 계산 섹션을 함께 구성해 실제 서비스처럼 시작할 수 있도록 설계했습니다.
             </p>
