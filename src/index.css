@@ -38,6 +38,15 @@ input {
   min-height: 100vh;
 }
 
+.marker-yellow {
+  border-radius: 9999px;
+  padding: 0.05rem 0.34rem;
+  color: #fff;
+  background-color: #ff5500c3;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;

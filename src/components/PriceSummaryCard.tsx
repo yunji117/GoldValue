@@ -36,7 +36,7 @@ export const PriceSummaryCard = ({
             <p className="text-sm leading-6 text-subink">
               24K 순금 3.75g 기준 매입/매도 예상가를 중심으로 KRW 시세를 표시합니다.
             </p>
-            <p className="text-xs leading-5 text-subink/80">
+            <p className="text-sm leading-6 text-subink">
               국제 시세와 환율, 보정계수를 반영한 참고용 예상 금액입니다. 실제 거래 가격은
               매장 정책과 반영 시점에 따라 달라질 수 있습니다.
             </p>

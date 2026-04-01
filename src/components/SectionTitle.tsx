@@ -18,7 +18,7 @@ export const SectionTitle = ({
         <h2 className="font-display text-4xl leading-none text-ink md:text-5xl">
           {title}
         </h2>
-        <p className="max-w-2xl text-sm leading-7 text-subink md:text-base">
+        <p className="max-w-2xl whitespace-pre-line text-sm leading-7 text-subink md:text-base">
           {description}
         </p>
       </div>

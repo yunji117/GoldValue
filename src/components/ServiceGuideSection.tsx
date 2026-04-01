@@ -20,7 +20,7 @@ export const ServiceGuideSection = () => {
 
       <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <article className="rounded-3xl border border-line/80 bg-white p-5">
-          <h3 className="text-base font-semibold text-ink">이 웹앱은 무엇인가요?</h3>
+          <h3 className="text-base font-semibold text-ink">이 웹은 무엇인가요?</h3>
           <p className="mt-2 text-sm leading-6 text-subink">
             24K, 18K, 14K, 백금, 은, 팔라듐의 g/kg 입력값을 기준으로 예상 금액을 빠르게
             계산해 주는 귀금속 계산기입니다.

@@ -26,14 +26,15 @@ const App = () => {
         />
 
         <section className="space-y-8">
-          <div className="space-y-6">
+            <div className="space-y-6">
             <SectionTitle
               eyebrow="Calculator"
               title="귀금속별 예상 금액을 한 번에 계산"
-              description="24K, 18K, 14K는 금 시세 기준 순도를 반영하고, 백금, 은, 팔라듐은 각각의 실시간 시세를 사용합니다. 각 입력창은 독립적으로 동작해 계산 흐름이 명확합니다."
+              description={`24K, 18K, 14K는 금 시세 기준 순도를 반영하고, 백금, 은, 팔라듐은 각각의 실시간 시세를 사용합니다.
+각 입력창은 독립적으로 동작해 계산 흐름이 명확합니다.`}
             />
             <NoticePanel />
-          </div>
+            </div>
 
           <div className="grid gap-5 md:grid-cols-2 2xl:grid-cols-3">
             <CalculatorCard
