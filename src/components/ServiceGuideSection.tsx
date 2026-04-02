@@ -13,8 +13,8 @@ export const ServiceGuideSection = () => {
         </h2>
         <p className="max-w-3xl text-sm leading-7 text-subink md:text-base">
           Gold Value는 귀금속 시세를 참고해 예상 금액을 계산하는 정보형 웹앱입니다.
-          광고 노출 전후와 관계없이 계산 결과는 참고용이며 실제 거래 금액은 매장 정책과
-          수수료 등에 따라 달라질 수 있습니다.
+          <br />
+          계산 결과는 참고용이며 실제 거래 금액은 매장 정책과 수수료 등에 따라 달라질 수 있습니다.
         </p>
       </div>
 
