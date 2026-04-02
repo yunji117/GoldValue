@@ -31,27 +31,24 @@ npm run dev:vercel
 - API 주소: `http://localhost:3000/api/prices`
 - 확인 포인트: `/api/prices` 응답의 `"source"`가 `"live"`면 정상 연동입니다.
 
-### 3) 문의 메일 기능까지 테스트
+### 3) 오픈카톡 문의 링크 연결
 
-`문의 보내기` 섹션을 실제 메일 전송까지 사용하려면 아래 환경변수를 채운 뒤 `npm run dev:vercel`로 실행합니다.
+`문의 보내기` 섹션에서 오픈카톡으로 바로 이동하려면 아래 환경변수를 설정하세요.
 
 ```env
-RESEND_API_KEY=your_resend_api_key
-CONTACT_TO_EMAIL=your_name@gmail.com
-CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
+VITE_OPEN_KAKAO_URL=https://open.kakao.com/o/your_open_chat_path
 ```
 
-- 폼 전송 API: `POST /api/contact`
-- 동작 방식: 브라우저 -> 서버 API -> Resend -> Gmail 전달
-- 장점: 운영자 Gmail 주소를 화면에 직접 노출하지 않아도 문의 수신 가능
+- 동작 방식: 브라우저 -> 오픈카톡 링크 새 탭 이동
+- 참고: URL이 없거나 형식이 잘못되면 기본 링크(`https://open.kakao.com/`)로 이동합니다.
+- QR 코드 이미지 파일 위치: `public/images/KakaoTalkqr.png`
 
 ## 기술 스택
 
 - Frontend: `React 18`, `TypeScript`, `Vite`
 - UI: `Tailwind CSS`, `PostCSS`, `Autoprefixer`
-- API Runtime: `Vercel Functions` (`api/prices.ts`, `api/contact.ts`)
+- API Runtime: `Vercel Functions` (`api/prices.ts`)
 - External API: `Gold API` (`https://api.gold-api.com`)
-- Mail API: `Resend` (운영자 Gmail로 전달)
 
 ## API 사용 방식 (요약)
 
@@ -83,10 +80,8 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
 
 ## 문의 기능 흐름 (요약)
 
-1. 사용자가 앱 하단 `문의 보내기` 폼에 내용을 입력합니다.
-2. 프론트는 `/api/contact`로 POST 요청을 보냅니다.
-3. 서버는 입력값 검증 후 Resend API를 호출합니다.
-4. Resend가 설정된 `CONTACT_TO_EMAIL`(Gmail)로 문의를 전달합니다.
+1. 사용자가 앱 하단 `오픈카톡 문의하기` 버튼을 클릭합니다.
+2. 브라우저가 `VITE_OPEN_KAKAO_URL`로 새 탭 이동합니다.
 
 ## 폴더 구조
 
@@ -94,10 +89,9 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
 src/
   components/         # 화면 컴포넌트
   hooks/              # 데이터 훅
-  services/           # 프론트 API 호출/매핑(시세, 문의)
+  services/           # 프론트 API 호출/매핑(시세)
 api/
   prices.ts           # 시세 API 엔드포인트
-  contact.ts          # 문의 메일 API 엔드포인트
   _lib/               # API 계산/타입/외부 호출/보정계수 유틸
 ```
 
@@ -109,8 +103,8 @@ api/
 ```env
 # 프론트가 호출할 API 경로 (기본값)
 VITE_GOLD_API_ENDPOINT=/api/prices
-# 문의 폼 API 경로 (기본값)
-VITE_CONTACT_API_ENDPOINT=/api/contact
+# 문의 버튼 오픈카톡 링크
+VITE_OPEN_KAKAO_URL=https://open.kakao.com/o/your_open_chat_path
 
 # Gold API base URL
 GOLD_API_BASE_URL=https://api.gold-api.com
@@ -143,10 +137,6 @@ PRICE_ALIGN_TARGET_SELL_24K_3_75G_18=
 # PRICE_ALIGN_TARGET_BUY_PLATINUM_3_75G=
 # PRICE_ALIGN_TARGET_SELL_PLATINUM_3_75G=
 
-# 문의 메일 전송용 (Resend)
-RESEND_API_KEY=your_resend_api_key
-CONTACT_TO_EMAIL=your_name@gmail.com
-CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
 ```
 
 ## 로컬 주소 정리
@@ -154,10 +144,8 @@ CONTACT_FROM_EMAIL=Gold Value <no-reply@your-domain.com>
 - 프론트 확인 모드 웹: `http://localhost:5173/`
 - Live 모드 웹: `http://localhost:3000/`
 - Live 모드 API: `http://localhost:3000/api/prices`
-- 문의 API: `http://localhost:3000/api/contact`
 
 ## 참고
 
 - 기본 연동 경로는 `/api/prices`입니다.
-- 문의 폼은 기본적으로 `/api/contact`를 호출합니다.
 - `api/gold.ts`는 과거 예시용 경로이며 현재 기본 흐름에서는 사용하지 않습니다.
